@@ -4,10 +4,10 @@
       <div class="col-md-6">
         <img class="img-fluid" :src="blogs.imgUrl" />
         <p></p>
-        <h1>{{ blog.title }}</h1>
+        <h1>{{ blogs.title }}</h1>
       </div>
       <div class="col-md-12">
-        {{ blog.body }}
+        {{ blogs.body }}
       </div>
     </div>
   </div>

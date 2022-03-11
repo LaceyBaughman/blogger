@@ -14,7 +14,7 @@ class BlogsService {
     }
 
     async getActiveBlog(id) {
-        const res = await api.get('blogs/' + id)
+        const res = await api.get('api/blogs/' + id)
         logger.log('[Service:GetActive]', res.data)
         AppState.activeBlog = res.data
     }

@@ -1,30 +1,52 @@
 
-
-<template></template>
+<template>
+  <div class="container-fluid">
+    <div class="row">
+      <div v-for="b in blogs" :key="b.id" class="col-md-2">
+        <h3 class="selectable" @click="getActiveBlog(b.id)">
+          {{ b.title }}
+        </h3>
+      </div>
+      <div class="col-md-8">
+        <Blog v-if="activeBlog.title" :blogs="activeBlog" />
+      </div>
+    </div>
+  </div>
+</template>
 
 <script>
 import { computed, onMounted } from "@vue/runtime-core";
-
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
-import { blogService } from "../services/BlogService";
+import { blogsService } from "../services/BlogsService";
 import { AppState } from "../AppState";
+import Blog from "../components/Blog.vue";
 
 export default {
+  components: { Blog },
   name: "blogs",
   setup() {
     onMounted(async () => {
       try {
-        await blogService.getAll();
-        logger.log("onmount working", res.data);
+        await blogsService.getAll();
       } catch (error) {
         Pop.toast(error.message);
-        logger.log(error);
+        logger.log(error.message, "error");
         return;
       }
     });
     return {
       blogs: computed(() => AppState.blogs),
+      activeBlog: computed(() => AppState.activeBlog),
+
+      async getActiveBlog(id) {
+        try {
+          await blogsService.getActiveBlog(id);
+        } catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
+        }
+      },
     };
   },
 };
